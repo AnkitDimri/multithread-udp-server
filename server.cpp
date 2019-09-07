@@ -5,6 +5,20 @@
 #include <cstring>
 #include <stdio.h>
 #include <algorithm>
+#include <pthread.h>
+
+ pthread_t threads [100];
+ int threadno = 0;
+
+ struct req {
+     int reqno;
+     int des;
+     char str [2048];
+     socklen_t addlen;
+     sockaddr_in clientaddr;
+ };
+
+ void* reverse_string (void*);
 
  int main(int argc, char const *argv[]) {
 
@@ -36,24 +50,39 @@
 
      while (1) {
          std::cout << "\n\t Waiting on port 1721" << '\n';
-         recvlen = recvfrom (fd, buf, 2048, 0, (sockaddr*) &mistaddr, &addrlen);
-         std::cout << "\n\t Message: " << buf << '\n';
-         //memset (buf, 0, sizeof (buf));
-         //std::cout << "reply: ";
-         //std::cin.getline (buf, 2048);
-         std::reverse( buf, &buf[ strlen( buf ) ] );
+         recvlen = recvfrom (fd, buf, 2048, 0, (sockaddr*) &clientaddr, &addrlen);
+         msgcnt++;
+
+         req *r = new req;
+         bzero (r, sizeof (req));
+         r->reqno = msgcnt;
+         r->addlen = addrlen;
+         r->clientaddr = clientaddr;
+         r->des = fd;
+         strcpy (r->str, buf);
+
+         pthread_create (&threads [threadno++], NULL, reverse_string, (void*)r);
+         if (threadno == 100)
+             threadno = 0;
+
          if (strcmp ("exit", buf) == 0) {
              close (fd);
              std::cout << "\n\t Exiting..." << '\n';
              return 0;
          }
-        // getline (std::cin, buf);
-        // std::cin >> buf;
-         msgcnt++;
-         std::cout << "\n\t (message count: " << msgcnt << ")" << '\n';
-         sendto (fd, buf, strlen (buf), 0, (sockaddr*) &mistaddr, addrlen);
+
          memset (buf, 0, sizeof (buf));
      }
 
      return 0;
+ }
+
+ void* reverse_string (void* r) {
+
+     req rq = *((req*)r);
+     std::cout << "\n" << rq.str << ' ';
+     std::cout << " (message count: " << rq.reqno << ")" << '\n';
+     std::reverse( rq.str, &rq.str[ strlen( rq.str ) ] );
+     sendto (rq.des, rq.str, strlen (rq.str), 0, (sockaddr*) &rq.clientaddr, rq.addlen);
+
  }
