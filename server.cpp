@@ -6,9 +6,19 @@
 #include <stdio.h>
 #include <algorithm>
 #include <pthread.h>
+#include <signal.h>
 
  pthread_t threads [100];
- int threadno = 0;
+ int threadno = 0, fd;
+
+ void sig_handler(int signo) {
+
+     if (signo == SIGINT) {
+         printf("\t Exiting...\n");
+         close (fd);
+         exit (1);
+     }
+ }
 
  struct req {
      int reqno;
@@ -26,7 +36,7 @@
      sockaddr_in clientaddr; // client address
 
      socklen_t addrlen = sizeof(clientaddr);
-     int recvlen, fd, msgcnt = 0;
+     int recvlen, msgcnt = 0;
      char buf [2048];
 
      if ((fd = socket (AF_INET, SOCK_DGRAM, 0)) == -1) {
@@ -64,12 +74,6 @@
          pthread_create (&threads [threadno++], NULL, reverse_string, (void*)r);
          if (threadno == 100)
              threadno = 0;
-
-         if (strcmp ("exit", buf) == 0) {
-             close (fd);
-             std::cout << "\n\t Exiting..." << '\n';
-             return 0;
-         }
 
          memset (buf, 0, sizeof (buf));
      }
