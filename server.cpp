@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <pthread.h>
 #include <signal.h>
+#include <arpa/inet.h>
 
  pthread_t threads [100];
  int threadno = 0, fd;
@@ -14,7 +15,7 @@
  void sig_handler(int signo) {
 
      if (signo == SIGINT) {
-         printf("\t Exiting...\n");
+         std::cout << "\t Exiting..." << '\n';
          close (fd);
          exit (1);
      }
@@ -49,7 +50,7 @@
      memset ((sockaddr*)&mistaddr, 0, sizeof (mistaddr));
      mistaddr.sin_family = AF_INET;
      mistaddr.sin_addr.s_addr = htonl (INADDR_ANY);
-     mistaddr.sin_port = htons (1721);
+     mistaddr.sin_port = htons (2344);
 
      if (bind (fd, (sockaddr*)&mistaddr, sizeof (mistaddr)) == -1) {
          std::cout << "\n\t Binding failed...\n\t Exiting..." << '\n';
@@ -59,7 +60,7 @@
      std::cout << "\n\t Binding succesful" << '\n';
 
      while (1) {
-         std::cout << "\n\t Waiting on port 1721" << '\n';
+         std::cout << "\n\t Waiting on port " << mistaddr.sin_port << '\n';
          recvlen = recvfrom (fd, buf, 2048, 0, (sockaddr*) &clientaddr, &addrlen);
          msgcnt++;
 
@@ -84,8 +85,8 @@
  void* reverse_string (void* r) {
 
      req rq = *((req*)r);
-     std::cout << "\n" << rq.str << ' ';
-     std::cout << " (message count: " << rq.reqno << ")" << '\n';
+     std::cout << "\n String: " << rq.str << "  | From: " << inet_ntoa (rq.clientaddr.sin_addr);
+     std::cout << "  (message count: " << rq.reqno << ")" << '\n';
      std::reverse( rq.str, &rq.str[ strlen( rq.str ) ] );
      sendto (rq.des, rq.str, strlen (rq.str), 0, (sockaddr*) &rq.clientaddr, rq.addlen);
 

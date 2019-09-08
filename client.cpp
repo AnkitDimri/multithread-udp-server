@@ -36,7 +36,7 @@
 
      memset ((char*) &remaddr, 0, sizeof (remaddr));
      remaddr.sin_family = AF_INET;
-     remaddr.sin_port = htons (1721);
+     remaddr.sin_port = htons (2344);
      if (inet_aton (server, &remaddr.sin_addr) == 0) {
          std::cout << "\n\t inet_aton() failed...\n\t Exiting..." << '\n';
          return 0;
@@ -47,7 +47,7 @@
          //getline (std::cin, buf);
          std::cout << "\n\t Enter the string to be reversed : ";
          std::cin.getline (buf, 2048);
-         std::cout << "\n\t Sending packet " << i << " to " << server << " on port 1721" << '\n';
+         std::cout << "\n\t Sending packet " << i << " to " << server << " on port " << remaddr.sin_port << '\n';
          sendto (fd, buf, strlen (buf), 0, (sockaddr*) &remaddr, slen);
 
          memset (buf, 0, sizeof (buf));
