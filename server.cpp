@@ -59,6 +59,9 @@
 
      std::cout << "\n\t Binding succesful" << '\n';
 
+     signal(SIGINT, sig_handler);
+     signal(SIGTSTP, sig_handler);
+
      while (1) {
          std::cout << "\n\t Waiting on port " << mistaddr.sin_port << '\n';
          recvlen = recvfrom (fd, buf, 2048, 0, (sockaddr*) &clientaddr, &addrlen);
