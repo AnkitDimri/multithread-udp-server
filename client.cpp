@@ -5,11 +5,23 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <arpa/inet.h>
+#include <signal.h>
+
+ int fd;
+
+ void sig_handler(int signo) {
+
+     if (signo == SIGINT) {
+         std::cout << "\t Exiting..." << '\n';
+         close (fd);
+         exit (1);
+     }
+ }
 
  int main(int argc, char const *argv[]) {
 
      sockaddr_in myaddr,remaddr;
-     int fd, slen = sizeof (remaddr), recvlen;
+     int slen = sizeof (remaddr), recvlen;
      char buf [2048];
      int rcvlen;
      char *server = "127.0.0.1";
@@ -18,6 +30,9 @@
          std::cout << "\n\t Socket creation failed...\n\t Exiting..." << '\n';
          return 0;
      }
+
+     signal(SIGINT, sig_handler);
+     signal(SIGTSTP, sig_handler);
 
      std::cout << "\n\t Socket created..." << '\n';
 
@@ -36,18 +51,20 @@
 
      memset ((char*) &remaddr, 0, sizeof (remaddr));
      remaddr.sin_family = AF_INET;
-     remaddr.sin_port = htons (2344);
+     remaddr.sin_port = htons (1721);
      if (inet_aton (server, &remaddr.sin_addr) == 0) {
          std::cout << "\n\t inet_aton() failed...\n\t Exiting..." << '\n';
          return 0;
      }
 
-     for (int i = 0; i < 5; i++) {
+     int i = 0;
+
+     while (1) {
          //std::cin >> buf;
          //getline (std::cin, buf);
          std::cout << "\n\t Enter the string to be reversed : ";
          std::cin.getline (buf, 2048);
-         std::cout << "\n\t Sending packet " << i << " to " << server << " on port " << remaddr.sin_port << '\n';
+         std::cout << "\n\t Sending packet " << i++ << " to " << server << " on port " << ntohs(remaddr.sin_port) << '\n';
          sendto (fd, buf, strlen (buf), 0, (sockaddr*) &remaddr, slen);
 
          memset (buf, 0, sizeof (buf));
@@ -56,8 +73,6 @@
          std::cout << "\n\t recieved: " << buf << '\n';
          memset (buf, 0, sizeof (buf));
      }
-
-     close (fd);
 
      return 0;
  }
