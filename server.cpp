@@ -50,7 +50,7 @@
      memset ((sockaddr*)&mistaddr, 0, sizeof (mistaddr));
      mistaddr.sin_family = AF_INET;
      mistaddr.sin_addr.s_addr = htonl (INADDR_ANY);
-     mistaddr.sin_port = htons (2344);
+     mistaddr.sin_port = htons (1721);
 
      if (bind (fd, (sockaddr*)&mistaddr, sizeof (mistaddr)) == -1) {
          std::cout << "\n\t Binding failed...\n\t Exiting..." << '\n';
@@ -63,7 +63,7 @@
      signal(SIGTSTP, sig_handler);
 
      while (1) {
-         std::cout << "\n\t Waiting on port " << mistaddr.sin_port << '\n';
+         std::cout << "\n\t Waiting on port " << ntohs(mistaddr.sin_port) << '\n';
          recvlen = recvfrom (fd, buf, 2048, 0, (sockaddr*) &clientaddr, &addrlen);
          msgcnt++;
 
