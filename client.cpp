@@ -39,7 +39,7 @@
      memset ((char*)&myaddr, 0, sizeof (myaddr));
      myaddr.sin_family = AF_INET;
      myaddr.sin_addr.s_addr = htonl (INADDR_ANY);
-     myaddr.sin_port = htons (0);
+     myaddr.sin_port = htons (3071);
 
      //bind
      if (bind(fd, (sockaddr*) &myaddr, sizeof (myaddr)) < 0) {

@@ -88,7 +88,7 @@
  void* reverse_string (void* r) {
 
      req rq = *((req*)r);
-     std::cout << "\n String: " << rq.str << "  | From: " << inet_ntoa (rq.clientaddr.sin_addr);
+     std::cout << "\n String: " << rq.str << "  | From: " << inet_ntoa (rq.clientaddr.sin_addr) << ":" << ntohs (rq.clientaddr.sin_port);
      std::cout << "  (message count: " << rq.reqno << ")" << '\n';
      std::reverse( rq.str, &rq.str[ strlen( rq.str ) ] );
      sendto (rq.des, rq.str, strlen (rq.str), 0, (sockaddr*) &rq.clientaddr, rq.addlen);
