@@ -1,7 +1,7 @@
 /*****************************************************************************************************************************************
  *                                                                                                                                       *
  *  author: Ankit Dimri                                                                                                                  *
- *    Multithreaded udp server to reverse a given input string by the client.                                                            *
+ *  Multithreaded udp server to reverse a given input string by the client.                                                              *
  *                                                                                                                                       *
  *****************************************************************************************************************************************/
 
