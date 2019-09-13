@@ -1,3 +1,11 @@
+/*****************************************************************************************************************************************
+ *                                                                                                                                       *
+ *  author: Ankit Dimri                                                                                                                  *
+ *  udp client which runs infinitely to take a user string input and sends it to multitheaded udp server to reverse it and send back     *
+ *  to client to display.                                                                                                                *
+ *                                                                                                                                       *
+ *****************************************************************************************************************************************/
+
 #include <iostream>
 #include <sys/socket.h>
 #include <cstring>
