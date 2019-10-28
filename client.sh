@@ -18,7 +18,6 @@ count=0
 ps_running=$(pidof client)
 for pids in $ps_running
 do
-  echo $pids
   count=`expr $count + 1`
 done
 
