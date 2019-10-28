@@ -9,8 +9,10 @@ echo "Client code compiled..."
 # and give apropriate number to the new client
 
 count=0
-for pids in pidof client
+ps_running=($(pidof client))
+for pids in $ps_running
 do
+  echo $pids
   count=`expr $count + 1`
 done
 
