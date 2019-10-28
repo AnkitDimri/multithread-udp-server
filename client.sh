@@ -9,11 +9,12 @@ echo "Client code compiled..."
 # and give apropriate number to the new client
 
 count = 0
-for count in pidof client
+for pids in pidof client
 do
   count = `expr $count + 1`
 done
 
+count = `expr $count + 1`
 
 echo "Starting client $count ..."
 echo
