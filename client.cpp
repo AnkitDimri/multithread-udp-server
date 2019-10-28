@@ -50,7 +50,9 @@
      memset ((char*)&myaddr, 0, sizeof (myaddr));  // clear memory allocated
      myaddr.sin_family = AF_INET; // IPv4 address family
      myaddr.sin_addr.s_addr = htonl (INADDR_ANY); // give local machine address automatically
-     // myaddr.sin_port = htons (3071); // a port number for the socket
+
+     /* Comment the command below if running multiple client processes on same machine */
+     // myaddr.sin_port = htons (3071); // assigns a port number for the socket of client process
 
      // bind the IP address and the port to the descritor to create socket */
      if (bind(fd, (sockaddr*) &myaddr, sizeof (myaddr)) < 0) {
