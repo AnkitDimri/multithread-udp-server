@@ -119,4 +119,5 @@
      /* Send the reversed string back to the client at its socket */
      sendto (rq.des, rq.str, strlen (rq.str), 0, (sockaddr*) &rq.clientaddr, rq.addlen);
 
+     return NULL;
  }
