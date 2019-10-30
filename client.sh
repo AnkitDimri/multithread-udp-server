@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# @author: Ankit Dimri
+
 echo "Compiling client.cpp ..."
 echo
 g++ client.cpp -o client
