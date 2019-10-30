@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# @author: Ankit Dimri
+
 echo "Compiling server.cpp ..."
 echo
 g++ server.cpp -o server -lpthread
