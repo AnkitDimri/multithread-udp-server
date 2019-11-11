@@ -46,7 +46,7 @@
 
  int main(int argc, char const *argv[]) {
 
-     /* srver name : Misty */
+     /* server name : Misty */
      sockaddr_in mistaddr; // server address
      sockaddr_in clientaddr; // client address
 
@@ -68,7 +68,7 @@
      mistaddr.sin_addr.s_addr = htonl (INADDR_ANY);  // Give the local machine address
      mistaddr.sin_port = htons (1721); // Port at which server listens to the requests
 
-     /* Bind the IP address and the port number to craete the socket */
+     /* Bind the IP address and the port number to create the socket */
      if (bind (fd, (sockaddr*)&mistaddr, sizeof (mistaddr)) == -1) {
          std::cout << "\n\t Binding failed...\n\t Exiting..." << '\n';
          return 0;
